@@ -5,4 +5,4 @@ Folder / File Name                    |Permission
 ------------------------|------------------------
 **DcmFile/**|Read,Write
 **ImgFile/**|Read,Write
-**retrive/**|Read,Write
+**retrieve/**|Read,Write
