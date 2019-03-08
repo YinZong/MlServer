@@ -39,7 +39,7 @@ class jpg2dcm(Resource):
     def get(self):
         print('\033[0;35;40m\texecute the dcm4chee tool kit\033[0m')
         subprocess.call('/home/jerry/Desktop/HepatoAI/MlServer/dcm4che-5.15.1/bin/jpg2dcm /home/jerry/Desktop/HepatoAI/MlServer/ImgFile/123.jpg \
-            /home/jerry/Desktop/HepatoAI/MlServer/DcmFile/3344.dcm', shell = True)
+            /home/jerry/Desktop/HepatoAI/MlServer/static/DcmFile/3344.dcm', shell = True)
         return 'The jpg file has been convert!!!'
 
 ##### After retrieve Dicom file from PACS server, all dicom file read by Numpy. #####

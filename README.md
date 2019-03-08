@@ -3,6 +3,7 @@ To start ML DWV Server run **ml_app.py** python file.
 ###	Prerequisites Folder
 Folder / File Name                    |Permission
 ------------------------|------------------------
-**DcmFile/**|Read,Write
-**ImgFile/**|Read,Write
-**retrieve/**|Read,Write
+**static/**|Read,Write
+**static/DcmFile/**|Read,Write
+**static/ImgFile/**|Read,Write
+**static/retrieve/**|Read,Write

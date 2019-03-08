@@ -21,17 +21,17 @@ def connect_pacs(formdata, studyID, seriesUID, instanceUID, layer, foldername):
     connect = formdata.get('Title') + "@" + formdata.get('ipAddr') + ":" + formdata.get('Port')
     if(layer == 1):
         subprocess.call(GETSCU_CMD + typeLayer[layer] + " -c " + connect + " -m 0020000D=" + studyID + 
-            " --directory ./retrieve/" + foldername + "/", shell = True)
+            " --directory ./static/retrieve/" + foldername + "/", shell = True)
     if(layer == 2):
         subprocess.call(GETSCU_CMD + typeLayer[layer] + " -c " + connect + " -m 0020000D=" + studyID + 
-            " -m 0020000E=" + seriesUID + " --directory ./retrieve/" + foldername + "/", shell = True)
+            " -m 0020000E=" + seriesUID + " --directory ./static/retrieve/" + foldername + "/", shell = True)
     if(layer == 3):
         subprocess.call(GETSCU_CMD + typeLayer[layer] + " -c " + connect + " -m 0020000D=" + studyID + 
-            " -m 0020000E=" + seriesUID + " -m 00080018=" + instanceUID + " --directory ./retrieve/" + foldername + "/", shell = True)
+            " -m 0020000E=" + seriesUID + " -m 00080018=" + instanceUID + " --directory ./static/retrieve/" + foldername + "/", shell = True)
 
 def folder_empty(older):
-    for fileName in os.listdir('./retrieve/' + older + '/'):
-        os.remove('./retrieve/' + older + '/' + fileName)
+    for fileName in os.listdir('./static/retrieve/' + older + '/'):
+        os.remove('./static/retrieve/' + older + '/' + fileName)
 
 def buffer_check(path):
     num_folders = 0
@@ -51,11 +51,11 @@ def buffer_check(path):
                 older = diff_time
                 older_name = name_list[i]
         folder_empty(older_name)
-        os.rmdir('./retrieve/' + older_name)
+        os.rmdir('./static/retrieve/' + older_name)
 
 def folder_manage():
     folder_name = time.strftime("%Y%m%d%H%M%S")
     print('\033[0;35;40m\t' + folder_name + '\033[0m')
-    buffer_check('./retrieve/')
+    buffer_check('./static/retrieve/')
     os.mkdir('/home/jerry/Desktop/HepatoAI/MlServer/retrieve/' + folder_name)
     return folder_name

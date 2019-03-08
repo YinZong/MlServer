@@ -9,8 +9,8 @@ import numpy as np
 
 def np_combine(foldername):
     result_array = None
-    for file_name in sorted(os.listdir('./retrieve/' + foldername)) :
-        file_path = os.path.join('./retrieve/' + foldername, file_name)
+    for file_name in sorted(os.listdir('./static/retrieve/' + foldername)) :
+        file_path = os.path.join('./static/retrieve/' + foldername, file_name)
         ds = pydicom.dcmread(file_path)
         temp_array = np.expand_dims(ds.pixel_array, axis=0)
         print('\033[0;35;40m\t' + file_name + '\033[0m')
