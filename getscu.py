@@ -2,10 +2,15 @@
 # -*- coding: UTF-8 -*-
 import os
 import time
+import json
 import subprocess
 
+
+with open('./config.json', 'r') as reader:
+    config_dict = json.loads(reader.read());
+
 typeLayer = ['PATIENT', 'STUDY', 'SERIES', 'IMAGE', 'FRAME']
-GETSCU_CMD = '/home/jerry/Desktop/HepatoAI/MlServer/dcm4che-5.15.1/bin/getscu -L '
+GETSCU_CMD = config_dict['dcmtool_path'] + 'getscu -L '
 
 FOLDER_BUFFER = 2
 
@@ -19,6 +24,7 @@ def check_layer(study, series, instance):
 
 def connect_pacs(formdata, studyID, seriesUID, instanceUID, layer, foldername):
     connect = formdata.get('Title') + "@" + formdata.get('ipAddr') + ":" + formdata.get('Port')
+    print(connect)
     if(layer == 1):
         subprocess.call(GETSCU_CMD + typeLayer[layer] + " -c " + connect + " -m 0020000D=" + studyID + 
             " --directory ./static/retrieve/" + foldername + "/", shell = True)
@@ -57,5 +63,5 @@ def folder_manage():
     folder_name = time.strftime("%Y%m%d%H%M%S")
     print('\033[0;35;40m\t' + folder_name + '\033[0m')
     buffer_check('./static/retrieve/')
-    os.mkdir('/home/jerry/Desktop/HepatoAI/MlServer/retrieve/' + folder_name)
+    os.mkdir('./static/retrieve/' + folder_name)
     return folder_name
