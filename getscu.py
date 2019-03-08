@@ -5,7 +5,7 @@ import time
 import subprocess
 
 typeLayer = ['PATIENT', 'STUDY', 'SERIES', 'IMAGE', 'FRAME']
-GETSCU_CMD = '/home/kevin/dcm4che-5.15.0/bin/getscu -L '
+GETSCU_CMD = '/home/jerry/Desktop/HepatoAI/MlServer/dcm4che-5.15.1/bin/getscu -L '
 
 FOLDER_BUFFER = 2
 
@@ -57,5 +57,5 @@ def folder_manage():
     folder_name = time.strftime("%Y%m%d%H%M%S")
     print('\033[0;35;40m\t' + folder_name + '\033[0m')
     buffer_check('./retrieve/')
-    os.mkdir('/home/kevin/ML_DWVserver/retrieve/' + folder_name)
+    os.mkdir('/home/jerry/Desktop/HepatoAI/MlServer/retrieve/' + folder_name)
     return folder_name

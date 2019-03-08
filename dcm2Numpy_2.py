@@ -18,4 +18,7 @@ def np_combine(foldername):
             result_array = temp_array
         else :
             result_array = np.concatenate((result_array,temp_array),axis=0)
-    return np.rollaxis(result_array, 0, 3)
+    #return np.rollaxis(result_array, 0, 3)
+    return result_array
+
+print(os.path.dirname(__file__))
