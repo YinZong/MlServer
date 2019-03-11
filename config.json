@@ -1,0 +1,7 @@
+{
+	"MlServer" : {
+		"host_ip" : "192.168.2.101",
+		"host_port" : 3303
+	},
+	"dcmtool_path" : "/home/kevin/dcm4che-5.15.0/bin/"
+}

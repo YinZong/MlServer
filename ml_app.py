@@ -15,7 +15,10 @@ import json
 sys.path.append("./HepatoPredictCode")
 
 app = Flask(__name__)
-cors = CORS(app)
+cors = CORS(app, resources={
+            r"/home/": { "origins": "*" },
+            r"/dwv-ml/*": { "origins": "*" }
+        })
 api = Api(app)
 
 parser = reqparse.RequestParser()
@@ -27,12 +30,6 @@ parser.add_argument('Name', dest = 'Name', location = 'form',
 
 with open('./config.json', 'r') as reader:
     config_dict = json.loads(reader.read());
-
-print('\033[0;35;40m\t' + '=================================' + '\033[0m');
-print(config_dict);
-print(config_dict['dcmtool_path']);
-print(type(config_dict['dcmtool_path']));
-print('\033[0;35;40m\t' + '=================================' + '\033[0m');
 
 ##### Test Api : You can test function by the api. #####
 class home(Resource):
@@ -55,14 +52,17 @@ class jpg2dcm(Resource):
 ##### After retrieve Dicom file from PACS server, all dicom file read by Numpy. #####
 class retrieve(Resource):
     def post(self):
-        layer = getscu.check_layer(request.form.get('Study'), request.form.get('Series'), request.form.get('Instance'))
+        print(request.get_json())
+        get_post_data = request.get_json()
+        layer = getscu.check_layer(get_post_data['Study'], get_post_data['Series'], get_post_data['Instance'])
         random_folder = getscu.folder_manage()
-        getscu_status = getscu.connect_pacs(request.form, request.form.get('Study'), request.form.get('Series'), 
-            request.form.get('Instance'), layer, random_folder)
-        #print('\033[0;35;40m\tRetrieve Diocm file from PACS server\033[0m')
-        # print(dcm2np.np_combine(random_folder))
-        dcm2np.sort_files(random_folder)
-        input = dcm2np.np_combine(random_folder)
+        getscu_status = getscu.connect_pacs(get_post_data, get_post_data['Study'], get_post_data['Series'], 
+            get_post_data['Instance'], layer, random_folder)
+        print('\033[0;35;40m\tReady to execute AI prediction\033[0m')
+
+        ##### Sort the dicom instance number ############## 
+        sequence_result = dcm2np.file_arrange(random_folder)
+        input = dcm2np.np_combine(random_folder, sequence_result)
 
         # Inference
         # from inference_api import LiverInference
