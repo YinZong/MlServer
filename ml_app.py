@@ -3,6 +3,7 @@
 from flask import Flask, request, jsonify
 from flask_restful import reqparse, abort, Api, Resource
 from flask_cors import CORS
+import datetime
 
 import numpy as np
 import dcm2Numpy_2 as dcm2np
@@ -49,8 +50,33 @@ class jpg2dcm(Resource):
             ./static/DcmFile/3344.dcm', shell = True)
         return 'The jpg file has been convert!!!'
 
+##### Only get the position of liver.
+class liverposition(Resource):
+    def get(self):
+        print('\033[0;35;40m\tconnect liverposition function\033[0m ')
+        return 'listening'
+    def post(self):
+        print(request.get_json())
+        get_post_data = request.get_json()
+        # layer = getscu.check_layer(get_post_data['Study'], get_post_data['Series'], get_post_data['Instance'])
+        # random_folder = getscu.folder_manage()
+        # getscu_status = getscu.connect_pacs(get_post_data, get_post_data['Study'], get_post_data['Series'], 
+        #     get_post_data['Instance'], layer, random_folder)
+        print('\033[0;35;40m\tReady to get liver postition\033[0m')
+
+        ##### Sort the dicom instance number ############## 
+        # sequence_result = dcm2np.file_arrange(random_folder)
+        return get_post_data, 200
+
+
 ##### After retrieve Dicom file from PACS server, all dicom file read by Numpy. #####
-class retrieve(Resource):
+class prediction(Resource):
+    def __init__(self):
+        # from inference_api import LiverInference
+        # self.LiverInferenceClass = LiverInference()
+        print("==================================== init ==========================================")
+        print(datetime.datetime.now())
+
     def post(self):
         print(request.get_json())
         get_post_data = request.get_json()
@@ -62,17 +88,19 @@ class retrieve(Resource):
 
         ##### Sort the dicom instance number ############## 
         sequence_result = dcm2np.file_arrange(random_folder)
-        input = dcm2np.np_combine(random_folder, sequence_result)
+        # input = dcm2np.np_combine(random_folder, sequence_result)
+        # print("==================================== get dcm file ==========================================")
+        print(datetime.datetime.now())
 
         # Inference
-        # from inference_api import LiverInference
-        # LiverInferenceClass = LiverInference()
-        # print(LiverInferenceClass.inference(input,spacing=4.0))
-        return 'finished', 200
+        # result = self.LiverInferenceClass.inference(input,spacing=4.0)
+        # print(result)
+        return sequence_result, 200
         
 api.add_resource(home, '/home/')
 api.add_resource(jpg2dcm, '/dwv-ml/')
-api.add_resource(retrieve, '/dwv-ml/retrieve/')
+api.add_resource(liverposition, '/dwv-ml/initial/')
+api.add_resource(prediction, '/dwv-ml/retrieve/')
 
 if __name__ == '__main__':
     app.run(debug=True, host=config_dict['MlServer']['host_ip'], port=config_dict['MlServer']['host_port'])

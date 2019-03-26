@@ -10,7 +10,6 @@ import numpy as np
 
 # response_template = {'prediction_array' : 'Prediction Results'}
 
-
 def file_arrange(foldername):
     num_files = 0
     for fileName in os.listdir('./static/retrieve/' + foldername + '/'):

@@ -5,14 +5,13 @@ import time
 import json
 import subprocess
 
-
 with open('./config.json', 'r') as reader:
     config_dict = json.loads(reader.read());
 
 typeLayer = ['PATIENT', 'STUDY', 'SERIES', 'IMAGE', 'FRAME']
 GETSCU_CMD = config_dict['dcmtool_path'] + 'getscu -L '
 
-FOLDER_BUFFER = 2
+FOLDER_BUFFER = config_dict["folder_buffer"]
 
 def check_layer(study, series, instance):
     if(study != '' and series != '' and instance != ''):
